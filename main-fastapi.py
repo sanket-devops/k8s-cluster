@@ -1,8 +1,6 @@
-from typing import Union
-
 from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
-from ssh import ssh_conn
+from modules.ssh import ssh_conn
 
 app = FastAPI()
 incomes = [
