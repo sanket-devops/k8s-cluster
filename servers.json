@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "host": "10.0.2.101",
+        "username": "root",
+        "password": "admin",
+        "hostname": "master",
+        "role": "master",
+        "master": "true"
+    },
+    {
+        "id": 2,
+        "host": "10.0.2.102",
+        "username": "root",
+        "password": "admin",
+        "hostname": "node1",
+        "role": "worker",
+        "master": "false"
+    },
+    {
+        "id": 3,
+        "host": "10.0.2.103",
+        "username": "root",
+        "password": "admin",
+        "hostname": "node2",
+        "role": "worker",
+        "master": "false"
+    }
+]
