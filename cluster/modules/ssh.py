@@ -1,13 +1,14 @@
 import paramiko
 import sys
+import os
 
-async def ssh_conn(host, username, password, commandsArr):
+def ssh_conn(host, username, password, commandsArr):
     hostName = host
     hostUser = username
     hostPass = password
     commands = commandsArr
     results = []
-
+    os.system("ssh-keygen -R {} > /dev/null 2>&1".format(hostName))
     client = paramiko.SSHClient()
     client.load_system_host_keys()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -19,5 +20,5 @@ async def ssh_conn(host, username, password, commandsArr):
             nRemove = line.strip('\n')
             temp.append(nRemove)
         results.append(temp)
-    print("Host: ", hostName,"\nData: ", results)
+    # print("Host: ", hostName,"\nData: ", results)
     return results
