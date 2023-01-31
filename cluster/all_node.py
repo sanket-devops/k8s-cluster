@@ -20,23 +20,20 @@ def setup_all_node(servers):
         # set_hostname(server)
 
         def set_hosts(servers):
-            print(">>>>>>>>>>>>>>>>>>>>>[Set Hosts]=>[ {} = {} ]<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            print(">>>>>>>>>>>>>>>>>>>>>[Add Host Entry]=>[ {} = {} ]<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
             for node in servers:
                 def set_hostEntry():
                     commandsArr = ["cat >>/etc/hosts<<EOF\n{}    {}\nEOF".format(node["host"], node["hostname"]),"cat /etc/hosts"]
                     res = ssh_conn(host, username, password, commandsArr)
-                    # print(res)
                     return res
                 commands_check = ["cat /etc/hosts | grep '{}    {}'".format(node["host"], node["hostname"])]
                 res = ssh_conn(host, username, password, commands_check)
-                # print(len(res))
                 for resData in res:
-                    # print(len(data))
                     if len(resData) == 0:
                         set_hostEntry()
-                        print("Host entery set...")
+                        print("Host entery add...")
                     else:
-                        print("Host entery already set...")
+                        print("Host entery already added...")
         # set_hosts(servers)
 
         def swap_off():
@@ -59,4 +56,11 @@ def setup_all_node(servers):
             res = ssh_conn(host, username, password, commandsArr)
             print("Require packages are installed...")
         # install_packages()
+
+        def kernal_modules():
+            print(">>>>>>>>>>>>>>>>>>>>[Load Kernal Modules]=>[ {} = {} ]<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            commandsArr = ["cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf\noverlay\nbr_netfilter\nEOF", "modprobe overlay", "modprobe br_netfilter", "cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf\nnet.bridge.bridge-nf-call-iptables  = 1\nnet.bridge.bridge-nf-call-ip6tables = 1\nnet.ipv4.ip_forward                 = 1\nEOF", "sysctl --system"]
+            res = ssh_conn(host, username, password, commandsArr)
+            print("Load kernal modules...")
+        # kernal_modules()
     
