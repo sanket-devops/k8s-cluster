@@ -47,3 +47,23 @@ def Setup_Cluster(servers):
                         print(output)
                 print("Node Join Command Generated...")
             Node_Join_Command()
+
+            def Install_CNI():
+                commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml"]
+                res = ssh_conn(host, username, password, commandsArr)
+                for commands in res:
+                    for output in commands:
+                        Node_Join = output
+                        print(output)
+                time.sleep(30)
+                print("CNI Installed")
+            Install_CNI()
+
+            def Taint_Node():
+                commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-"]
+                res = ssh_conn(host, username, password, commandsArr)
+                for commands in res:
+                    for output in commands:
+                        Node_Join = output
+                        print(output)
+            Taint_Node()
