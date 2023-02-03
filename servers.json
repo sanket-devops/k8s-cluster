@@ -7,7 +7,7 @@
         "hostname": "master",
         "local-registry": "10.0.2.101",
         "role": "master",
-        "master": "true"
+        "master": true
     },
     {
         "id": 2,
@@ -17,7 +17,7 @@
         "hostname": "node1",
         "local-registry": "10.0.2.101",
         "role": "worker",
-        "master": "false"
+        "master": false
     },
     {
         "id": 3,
@@ -27,6 +27,6 @@
         "hostname": "node2",
         "local-registry": "10.0.2.101",
         "role": "worker",
-        "master": "false"
+        "master": false
     }
 ]
