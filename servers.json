@@ -5,6 +5,7 @@
         "username": "root",
         "password": "admin",
         "hostname": "master",
+        "local-registry": "10.0.2.101",
         "role": "master",
         "master": "true"
     },
@@ -14,6 +15,7 @@
         "username": "root",
         "password": "admin",
         "hostname": "node1",
+        "local-registry": "10.0.2.101",
         "role": "worker",
         "master": "false"
     },
@@ -23,6 +25,7 @@
         "username": "root",
         "password": "admin",
         "hostname": "node2",
+        "local-registry": "10.0.2.101",
         "role": "worker",
         "master": "false"
     }

@@ -1,8 +1,8 @@
 import json
-from cluster.all_node import setup_all_node
+import settings
+from cluster.common import setup_all_nodes
 
-remote_servers = open("servers.json")
-servers = json.load(remote_servers)
+servers = json.load(settings.servers)
 
 
-setup_all_node(servers)
+setup_all_nodes(servers)
