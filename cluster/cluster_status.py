@@ -23,5 +23,9 @@ def Cluster_Status(servers):
                 for commands in res:
                     for output in commands:
                         print(output)
+                print("\n** To start using your cluster, you need to run the following as a regular user **")
+                print("\nmkdir -p $HOME/.kube")
+                print("\nsudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config")
+                print("\nsudo chown $(id -u):$(id -g) $HOME/.kube/config")
                 print("\n##################################################[ Cluster Setup Completed... ( ** Please Check Above Cluster Status ** )]##################################################\n")
             K8S_Status()

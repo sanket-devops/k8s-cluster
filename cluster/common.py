@@ -108,7 +108,7 @@ def Setup_All_Nodes(servers):
                 ]
             res = ssh_conn(host, username, password, commandsArr)
             time.sleep(5)
-            print("\nServer Rebooting...\n")
+            print("Server Rebooting...\n")
         Reboot_Server()
 
         def Check_Server_Back_Online():
@@ -123,7 +123,7 @@ def Setup_All_Nodes(servers):
                 for commands in res:
                     for output in commands:
                         if output == hostname:
-                            print("{} = {} > Server Back Online Connected...".format(hostname, host))
+                            print("{} = {} > Server Back Online Connected...\n".format(hostname, host))
                             online = True
                             break
                 if online:
