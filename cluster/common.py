@@ -1,11 +1,10 @@
-import json
 import time
 import settings
 from cluster.modules.ssh import ssh_conn
 
 
 def Setup_All_Nodes(servers):
-    print("Step 2:\n##################################################{ Common Setup Started On All Nodes }##################################################")
+    print("Step 1:\n##################################################{ Common Setup Started On All Nodes }##################################################\n")
     for server in servers:
         id = server["id"]
         host = server["host"]
@@ -17,14 +16,14 @@ def Setup_All_Nodes(servers):
         print("========================================>[ {} = {} ]<========================================".format(hostname, host))
         
         def Set_Hostname():
-            print(">>>>>>>>>>>>>>>>>>>>( Set Hostname )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            print("\n>>>>>>>>>>>>>>>>>>>>( Set Hostname )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host))
             commandsArr = ["hostnamectl set-hostname {}".format(hostname),"cat /etc/hostname"]
             res = ssh_conn(host, username, password, commandsArr)
             print("Hostname set...")
-        # Set_Hostname()
+        Set_Hostname()
 
         def Set_Hosts():
-            print(">>>>>>>>>>>>>>>>>>>>>( Add Host Entry )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            print("\n>>>>>>>>>>>>>>>>>>>>>( Add Host Entry )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host))
             for node in servers:
                 def set_hostEntry():
                     commandsArr = ["cat >>/etc/hosts<<EOF\n{}    {}\nEOF".format(node["host"], node["hostname"]),"cat /etc/hosts"]
@@ -38,31 +37,31 @@ def Setup_All_Nodes(servers):
                         print("Host entery add...")
                     else:
                         print("Host entery already added...")
-        # Set_Hosts()
+        Set_Hosts()
 
         def Swap_Off():
-            print(">>>>>>>>>>>>>>>>>>>>( Swap Off )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            print("\n>>>>>>>>>>>>>>>>>>>>( Swap Off )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host))
             commandsArr = ["sed -i '/swap/d' /etc/fstab", "swapoff -a"]
             res = ssh_conn(host, username, password, commandsArr)
             print("Disable and turn off SWAP")
-        # Swap_Off()
+        Swap_Off()
 
         def Firewall_Disable():
-            print(">>>>>>>>>>>>>>>>>>>>( Firewall Disable )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            print("\n>>>>>>>>>>>>>>>>>>>>( Firewall Disable )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host))
             commandsArr = ["systemctl disable --now ufw"]
             res = ssh_conn(host, username, password, commandsArr)
             print("Stop and Disable firewall")
-        # Firewall_Disable()
+        Firewall_Disable()
 
         def Install_Packages():
-            print(">>>>>>>>>>>>>>>>>>>>( Install Packages )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            print("\n>>>>>>>>>>>>>>>>>>>>( Install Packages )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host))
             commandsArr = ["apt update", "apt-get install -y net-tools htop curl git apt-transport-https ca-certificates wget"]
             res = ssh_conn(host, username, password, commandsArr)
             print("Require packages are installed...")
-        # Install_Packages()
+        Install_Packages()
 
         def Kernal_Modules():
-            print(">>>>>>>>>>>>>>>>>>>>( Load K8S Network Kernal Modules )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            print("\n>>>>>>>>>>>>>>>>>>>>( Load K8S Network Kernal Modules )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host))
             commandsArr = [
                 "cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf\noverlay\nbr_netfilter\nEOF",
                 "modprobe overlay", "modprobe br_netfilter", 
@@ -71,10 +70,10 @@ def Setup_All_Nodes(servers):
                 ]
             res = ssh_conn(host, username, password, commandsArr)
             print("Kernal modules Loaded...")
-        # Kernal_Modules()
+        Kernal_Modules()
 
         def Install_Runtime():
-            print(">>>>>>>>>>>>>>>>>>>>( Install Container Runtime )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            print("\n>>>>>>>>>>>>>>>>>>>>( Install Container Runtime )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host))
             commandsArr = [
                 "wget https://github.com/containerd/containerd/releases/download/v{}/containerd-{}-linux-amd64.tar.gz -O containerd-{}-linux-amd64.tar.gz".format(settings.containerd, settings.containerd, settings.containerd),
                 "tar Cxzvf /usr/local containerd-{}-linux-amd64.tar.gz".format(settings.containerd),
@@ -87,10 +86,10 @@ def Setup_All_Nodes(servers):
                 ]
             res = ssh_conn(host, username, password, commandsArr)
             print("Container Runtime Installed...")
-        # Install_Runtime()
+        Install_Runtime()
 
         def Install_Kubernetes():
-            print(">>>>>>>>>>>>>>>>>>>>( Install Kubernetes Components )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            print("\n>>>>>>>>>>>>>>>>>>>>( Install Kubernetes Components )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host))
             commandsArr = [
                 "curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg",
                 "echo 'deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main' | tee /etc/apt/sources.list.d/kubernetes.list",
@@ -100,17 +99,17 @@ def Setup_All_Nodes(servers):
                 ]
             res = ssh_conn(host, username, password, commandsArr)
             print("Kubernetes Components Installed...")
-        # Install_Kubernetes()
+        Install_Kubernetes()
 
         def Reboot_Server():
-            print(">>>>>>>>>>>>>>>>>>>>( Reboot Server )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<".format(hostname, host))
+            print("\n>>>>>>>>>>>>>>>>>>>>( Reboot Server )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host))
             commandsArr = [
                 "reboot"
                 ]
             res = ssh_conn(host, username, password, commandsArr)
             time.sleep(5)
-            print("Server Rebooting...")
-        # Reboot_Server()
+            print("\nServer Rebooting...\n")
+        Reboot_Server()
 
         def Check_Server_Back_Online():
             online  = False
@@ -131,5 +130,6 @@ def Setup_All_Nodes(servers):
                     break
                 else:
                     print(counter, ".: Connectiong...")
+                    time.sleep(10)
         Check_Server_Back_Online()
-    print("##################################################{ Common Setup Finished On All Nodes }##################################################")
+    print("\n##################################################{ Common Setup Finished On All Nodes }##################################################\n")
