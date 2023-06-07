@@ -24,7 +24,32 @@ pipenv install
 # pipenv install --ignore-pipfile     # Install dependency from Pipfile.lock
 ```
 
-### Start Cluster Setup
+## Setup root access
+
+### 1. Set root password on both linux system
+```shell script
+sudo passwd root
+```
+### 2. Install Ubuntu OpenSSH Server on both system.
+```shell script
+sudo apt install -y openssh-client openssh-server
+```
+### 3. Edit the sshd_config file at location /etc/ssh on both system.
+```shell script
+sudo nano /etc/ssh/sshd_config
+```
+> Change below changes
+```shell script
+PasswordAuthentication yes
+PermitRootLogin yes
+PubkeyAuthentication yes
+```
+### 4. Restart the ssh service after change the configuration of both system.
+```shell script
+sudo systemctl restart sshd.service / sudo systemctl restart ssh
+```
+
+## Start Cluster Setup
 
 ```shell
 python main.py
