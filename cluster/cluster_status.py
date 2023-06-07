@@ -27,5 +27,6 @@ def Cluster_Status(servers):
                 print("\nmkdir -p $HOME/.kube")
                 print("\nsudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config")
                 print("\nsudo chown $(id -u):$(id -g) $HOME/.kube/config")
+                print("echo 'source <(kubectl completion bash)' >> ~/.bashrc && echo 'alias k=kubectl'>> ~/.bashrc && echo 'export KUBE_EDITOR=nano'>> ~/.bashrc && source ~/.bashrc")
                 print("\n##################################################[ Cluster Setup Completed... ( ** Please Check Above Cluster Status ** )]##################################################\n")
             K8S_Status()
