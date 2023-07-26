@@ -18,7 +18,7 @@ def Cluster_Status(servers):
 
             def K8S_Status():
                 print("\n>>>>>>>>>>>>>>>>>>>>( Kubernetes Cluster Status )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host))
-                commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes -o wide", "kubectl --kubeconfig /etc/kubernetes/admin.conf get all --all-namespaces -o wide"]
+                commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes -o wide", "kubectl --kubeconfig /etc/kubernetes/admin.conf get all --all-namespaces -o wide", "chmod 644 /etc/kubernetes/admin.conf"]
                 res = ssh_conn(host, username, password, commandsArr)
                 for commands in res:
                     for output in commands:
@@ -27,5 +27,6 @@ def Cluster_Status(servers):
                 print("\nmkdir -p $HOME/.kube")
                 print("\nsudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config")
                 print("\nsudo chown $(id -u):$(id -g) $HOME/.kube/config")
+                print("echo 'source <(kubectl completion bash)' >> ~/.bashrc && echo 'alias k=kubectl'>> ~/.bashrc && echo 'export KUBE_EDITOR=nano'>> ~/.bashrc && source ~/.bashrc")
                 print("\n##################################################[ Cluster Setup Completed... ( ** Please Check Above Cluster Status ** )]##################################################\n")
             K8S_Status()

@@ -11,31 +11,31 @@ global servers
 servers = [
     {
         "id": 1,
-        "host": "10.0.2.101",
+        "host": "192.168.120.33",
         "username": "root",
-        "password": "admin",
-        "hostname": "master",
-        "local-registry": "10.0.2.101",
+        "password": "Dorp$3202%rrepo",
+        "hostname": "operr-v3-prod2-master",
+        "local-registry": "192.168.120.33",
         "role": "master",
         "master": True
     },
     {
         "id": 2,
-        "host": "10.0.2.102",
+        "host": "192.168.120.34",
         "username": "root",
-        "password": "admin",
-        "hostname": "node1",
-        "local-registry": "10.0.2.101",
+        "password": "Dorp$3202%rrepo",
+        "hostname": "operr-v3-prod2-node1",
+        "local-registry": "192.168.120.33",
         "role": "worker",
         "master": False
     },
     {
         "id": 3,
-        "host": "10.0.2.103",
+        "host": "192.168.120.35",
         "username": "root",
-        "password": "admin",
-        "hostname": "node2",
-        "local-registry": "10.0.2.101",
+        "password": "Dorp$3202%rrepo",
+        "hostname": "operr-v3-prod2-node2",
+        "local-registry": "192.168.120.33",
         "role": "worker",
         "master": False
     }
