@@ -11,41 +11,31 @@ global servers
 servers = [
     {
         "id": 1,
-        "host": "192.168.120.121",
+        "host": "192.168.120.33",
         "username": "root",
-        "password": "Yxorp$07-Jun-2023%dorP",
-        "hostname": "proxy-prod-master",
-        "local-registry": "192.168.120.121",
+        "password": "Dorp$3202%rrepo",
+        "hostname": "operr-v3-prod2-master",
+        "local-registry": "192.168.120.33",
         "role": "master",
         "master": True
     },
     {
         "id": 2,
-        "host": "192.168.120.122",
+        "host": "192.168.120.34",
         "username": "root",
-        "password": "Yxorp$07-Jun-2023%dorP",
-        "hostname": "proxy-prod-node1",
-        "local-registry": "192.168.120.121",
+        "password": "Dorp$3202%rrepo",
+        "hostname": "operr-v3-prod2-node1",
+        "local-registry": "192.168.120.33",
         "role": "worker",
         "master": False
     },
     {
         "id": 3,
-        "host": "192.168.120.129",
+        "host": "192.168.120.35",
         "username": "root",
-        "password": "Yxorp$07-Jun-2023%dorP",
-        "hostname": "proxy-prod-node2",
-        "local-registry": "192.168.120.121",
-        "role": "worker",
-        "master": False
-    },
-    {
-        "id": 4,
-        "host": "192.168.120.147",
-        "username": "root",
-        "password": "Yxorp$07-Jun-2023%dorP",
-        "hostname": "proxy-prod-node3",
-        "local-registry": "192.168.120.121",
+        "password": "Dorp$3202%rrepo",
+        "hostname": "operr-v3-prod2-node2",
+        "local-registry": "192.168.120.33",
         "role": "worker",
         "master": False
     }

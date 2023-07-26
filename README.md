@@ -26,7 +26,7 @@ pipenv install
 
 ## Setup root access
 
-### 1. Set root password on both linux system
+### 1. Set root password on all linux servers
 ```shell script
 sudo passwd root
 ```
