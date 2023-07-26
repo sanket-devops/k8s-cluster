@@ -30,11 +30,11 @@ pipenv install
 ```shell script
 sudo passwd root
 ```
-### 2. Install Ubuntu OpenSSH Server on both system.
+### 2. Install Ubuntu OpenSSH Server on all linux servers.
 ```shell script
 sudo apt install -y openssh-client openssh-server
 ```
-### 3. Edit the sshd_config file at location /etc/ssh on both system.
+### 3. Edit the sshd_config file at location /etc/ssh on all linux servers.
 ```shell script
 sudo nano /etc/ssh/sshd_config
 ```
@@ -44,7 +44,7 @@ PasswordAuthentication yes
 PermitRootLogin yes
 PubkeyAuthentication yes
 ```
-### 4. Restart the ssh service after change the configuration of both system.
+### 4. Restart the ssh service after change the configuration of all linux servers.
 ```shell script
 sudo systemctl restart sshd.service / sudo systemctl restart ssh
 ```
