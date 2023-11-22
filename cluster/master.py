@@ -78,6 +78,22 @@ def Setup_Cluster(servers):
                 print("\nCNI Installed...")
             Install_CNI()
 
+            def Install_metrics_server():
+                print(settings.COLOR["BLUE"], "\n++++++++++++++++++++( Install Metrics Server )++++++++++++++++++++\n", settings.COLOR["ENDC"])
+                commandsArr = [
+                    "mkdir -p /etc/kubernetes/metrics-server",
+                    "echo '{}' > /etc/kubernetes/metrics-server/components.yaml".format(settings.metrics_server_components.replace("        - --metric-resolution=15s", "        - --metric-resolution=15s\n        - --kubelet-insecure-tls")),
+                    "kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f /etc/kubernetes/metrics-server/components.yaml"
+                    ]
+                res = ssh_conn(host, username, password, commandsArr)
+
+                # for commands in res:
+                #     for output in commands:
+                #         print(output)
+                time.sleep(30)
+                print("\nMetrics Server Installed...")
+            Install_metrics_server()
+
             def Taint_Node():
                 commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-"]
                 res = ssh_conn(host, username, password, commandsArr)

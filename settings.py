@@ -57,6 +57,16 @@ tigera_operator_remote_path = "/etc/kubernetes/network/calico/tigera-operator.ya
 global custom_resources
 custom_resources = open("./network/calico_v3.26.4/custom-resources.yaml").read()
 
+# K8S Metrics
+# https://github.com/kubernetes-sigs/metrics-server
+# kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+# kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.6.4/components.yaml
+global metrics_server_version
+metrics_server_version = "v0.6.4"
+global metrics_server_components
+metrics_server_components = open("./Metrics-Server/v0.6.4/components.yaml").read()
+
+
 global COLOR
 COLOR = {
     "HEADER": "\033[95m",
