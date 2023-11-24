@@ -42,7 +42,7 @@ kubernetes = "1.28.4"
 global kubernetes_semantic
 kubernetes_semantic = "1.1"
 global Containerd_Config
-Containerd_Config = open("./Container-Runtimes/containerd/containerd_1.7.8.toml").read()
+Containerd_Config = open("./Container-Runtimes/containerd/containerd_{}.toml".format(containerd)).read()
 global Node_Join
 
 # K8S Network Configuration
@@ -50,12 +50,14 @@ global network_cidr
 network_cidr = "10.244.0.0/16"
 
 # https://docs.tigera.io/calico/latest/getting-started/kubernetes/self-managed-onprem/onpremises#install-calico
+global calico_version
+calico_version = "v3.26.4"
 global tigera_operator_local_path
-tigera_operator_local_path = "./network/calico_v3.26.4/tigera-operator.yaml"
+tigera_operator_local_path = "./network/calico_{}/tigera-operator.yaml".format(calico_version)
 global tigera_operator_remote_path
 tigera_operator_remote_path = "/etc/kubernetes/network/calico/tigera-operator.yaml"
 global custom_resources
-custom_resources = open("./network/calico_v3.26.4/custom-resources.yaml").read()
+custom_resources = open("./network/calico_{}/custom-resources.yaml".format(calico_version)).read()
 
 # K8S Metrics
 # https://github.com/kubernetes-sigs/metrics-server
@@ -64,7 +66,7 @@ custom_resources = open("./network/calico_v3.26.4/custom-resources.yaml").read()
 global metrics_server_version
 metrics_server_version = "v0.6.4"
 global metrics_server_components
-metrics_server_components = open("./Metrics-Server/v0.6.4/components.yaml").read()
+metrics_server_components = open("./Metrics-Server/{}/components.yaml".format(metrics_server_version)).read()
 
 
 global COLOR

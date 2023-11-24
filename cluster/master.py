@@ -90,7 +90,7 @@ def Setup_Cluster(servers):
                 # for commands in res:
                 #     for output in commands:
                 #         print(output)
-                time.sleep(30)
+                time.sleep(50)
                 print("\nMetrics Server Installed...")
             Install_metrics_server()
 
