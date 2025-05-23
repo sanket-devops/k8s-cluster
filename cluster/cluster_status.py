@@ -12,6 +12,7 @@ def Cluster_Status(servers):
         host = server["host"]
         username = server["username"]
         password = server["password"]
+        sshKey = server["keyFilePath"]
         hostname = server["hostname"]
         role = server["role"]
         master = server["master"]
@@ -21,7 +22,7 @@ def Cluster_Status(servers):
             def K8S_Status():
                 print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Kubernetes Cluster Status )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
                 commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes -o wide", "kubectl --kubeconfig /etc/kubernetes/admin.conf get all --all-namespaces -o wide", "chmod 644 /etc/kubernetes/admin.conf"]
-                res = ssh_conn(host, username, password, commandsArr)
+                res = ssh_conn(host, username, password, sshKey, commandsArr)
                 for commands in res:
                     for output in commands:
                         print(output)

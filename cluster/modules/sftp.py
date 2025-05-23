@@ -4,18 +4,33 @@ import settings
 import os
 os.system("")
 
-def sftp_conn(host, username, password, localfilepath, remotefilepath, action):
+def sftp_conn(host, username, password, sshKey, localfilepath, remotefilepath, action):
     try:
         hostName = host
         hostUser = username
         hostPass = password
+        key_path = os.path.expanduser(sshKey)
         results = []
-        os.system("ssh-keygen -R {} > /dev/null 2>&1".format(hostName))
+        if os.name == "nt":
+            os.system("ssh-keygen -R {} > NUL 2>&1".format(hostName))
+        elif os.name == "posix":
+            os.system("ssh-keygen -R {} > /dev/null 2>&1".format(hostName))
         client = paramiko.SSHClient()
         client.load_system_host_keys()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect(hostName, username=hostUser, password=hostPass)
-
+        # client.connect(hostName, username=hostUser, password=hostPass)
+        try:
+            # First attempt: try with SSH key
+            # print("Trying to connect with SSH key...")
+            client.connect(hostName, username=hostUser, key_filename=key_path)
+        except (paramiko.AuthenticationException, paramiko.SSHException) as e:
+            print(f"Key-based authentication failed: {e}")
+            # print("Falling back to password authentication...")
+            try:
+                client.connect(hostName, username=hostUser, password=hostPass)
+            except Exception as e:
+                print(f"Password authentication failed: {e}")
+                exit(1)
 
         ftp_client=client.open_sftp()
         if action == "upload":

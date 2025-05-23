@@ -12,6 +12,7 @@ def Join_Nodes(servers):
         host = server["host"]
         username = server["username"]
         password = server["password"]
+        sshKey = server["keyFilePath"]
         hostname = server["hostname"]
         role = server["role"]
         master = server["master"]
@@ -21,7 +22,7 @@ def Join_Nodes(servers):
             def Join_Node():
                 print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Join This Node To The Cluster )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
                 commandsArr = ["{}".format(settings.Node_Join)]
-                res = ssh_conn(host, username, password, commandsArr)
+                res = ssh_conn(host, username, password, sshKey, commandsArr)
                 for commands in res:
                     for output in commands:
                         print(output)
