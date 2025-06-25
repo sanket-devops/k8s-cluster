@@ -63,11 +63,12 @@ def Setup_Cluster(servers):
                 res = ssh_conn(host, username, password, sshKey, commandsArr1)
 
                 # Upload tigera-operator.yaml file to remote server
-                sftp_conn(host, username, password, sshKey, settings.tigera_operator_local_path, settings.tigera_operator_remote_path, "upload")
+                # sftp_conn(host, username, password, sshKey, settings.tigera_operator_local_path, settings.tigera_operator_remote_path, "upload")
 
                 commandsArr2 = [
                     "echo '{}' > /etc/kubernetes/network/calico/custom-resources.yaml".format(settings.custom_resources.replace("192.168.0.0/16", settings.network_cidr)),
-                    "kubectl --kubeconfig /etc/kubernetes/admin.conf create -f /etc/kubernetes/network/calico/tigera-operator.yaml",
+                    "kubectl --kubeconfig /etc/kubernetes/admin.conf create -f https://raw.githubusercontent.com/projectcalico/calico/{}/manifests/operator-crds.yaml".format(settings.calico_version),
+                    "kubectl --kubeconfig /etc/kubernetes/admin.conf create -f https://raw.githubusercontent.com/projectcalico/calico/{}/manifests/tigera-operator.yaml".format(settings.calico_version),
                     "kubectl --kubeconfig /etc/kubernetes/admin.conf create -f /etc/kubernetes/network/calico/custom-resources.yaml"
                     ]
                 res = ssh_conn(host, username, password, sshKey, commandsArr2)

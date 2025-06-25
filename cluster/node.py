@@ -23,9 +23,9 @@ def Join_Nodes(servers):
                 print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Join This Node To The Cluster )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
                 commandsArr = ["{}".format(settings.Node_Join)]
                 res = ssh_conn(host, username, password, sshKey, commandsArr)
-                for commands in res:
-                    for output in commands:
-                        print(output)
+                # for commands in res:
+                #     for output in commands:
+                #         print(output)
                 time.sleep(30)
                 print("\nNode Join Proccess Completed...\n")
             Join_Node()

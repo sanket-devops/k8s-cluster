@@ -21,11 +21,15 @@ def Cluster_Status(servers):
 
             def K8S_Status():
                 print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Kubernetes Cluster Status )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
-                commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes -o wide", "kubectl --kubeconfig /etc/kubernetes/admin.conf get all --all-namespaces -o wide", "chmod 644 /etc/kubernetes/admin.conf"]
+                commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf wait --for=condition=ready --timeout=120s --all pod -n calico-system",
+                               "kubectl --kubeconfig /etc/kubernetes/admin.conf wait --for=condition=ready --timeout=120s --all pod -n calico-apiserver", 
+                               "kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes -o wide", 
+                               "kubectl --kubeconfig /etc/kubernetes/admin.conf get all --all-namespaces -o wide", 
+                               "chmod 644 /etc/kubernetes/admin.conf"]
                 res = ssh_conn(host, username, password, sshKey, commandsArr)
-                for commands in res:
-                    for output in commands:
-                        print(output)
+                # for commands in res:
+                #     for output in commands:
+                #         print(output)
                 print("\n** To start using your cluster, you need to run the following as a regular user **")
                 print("\nmkdir -p $HOME/.kube")
                 print("\nsudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config")
