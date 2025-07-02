@@ -113,7 +113,6 @@ def Setup_All_Nodes(servers):
             res = ssh_conn(host, username, password, sshKey, commandsArr)
             time.sleep(5)
             print("Server Rebooting...\n")
-        Reboot_Server()
 
         def Check_Server_Back_Online():
             online  = False
@@ -135,5 +134,21 @@ def Setup_All_Nodes(servers):
                 else:
                     print(counter, ".: Connecting...")
                     time.sleep(10)
-        Check_Server_Back_Online()
+    
+        def Check_K8s_Status():
+            print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( K8S Status )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
+            commandsArr = [
+                'if systemctl is-active --quiet kubelet; then echo "k8s-active"; '
+                'else echo "K8s is not active"; fi'
+                ]
+            res = ssh_conn(host, username, password, sshKey, commandsArr)
+            for commands in res:
+                for output in commands:
+                    if output in ["k8s-active"]:
+                        print(output)
+                    else:
+                        Reboot_Server()
+                        Check_Server_Back_Online()
+        Check_K8s_Status()
+
     print(settings.COLOR["GREEN"], "\n##################################################{ Common Setup Finished On All Nodes }##################################################\n", settings.COLOR["ENDC"])

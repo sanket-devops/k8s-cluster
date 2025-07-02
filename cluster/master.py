@@ -52,33 +52,60 @@ def Setup_Cluster(servers):
                 print("\nNode Join Command Generated...")
             Node_Join_Command()
 
-            def Install_CNI():
-                print(settings.COLOR["BLUE"], "\n++++++++++++++++++++( Initialize CNI )++++++++++++++++++++\n", settings.COLOR["ENDC"])
-                # Flannel network plugin
-                # commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml"]
-                # res = ssh_conn(host, username, password, commandsArr)
+            # def Install_CNI():
+            #     print(settings.COLOR["BLUE"], "\n++++++++++++++++++++( Initialize CNI )++++++++++++++++++++\n", settings.COLOR["ENDC"])
+            #     # Flannel network plugin
+            #     # commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml"]
+            #     # res = ssh_conn(host, username, password, commandsArr)
                 
-                # Calico as a network plugin
-                commandsArr1 = ["mkdir -p /etc/kubernetes/network/calico"]
-                res = ssh_conn(host, username, password, sshKey, commandsArr1)
+            #     # Calico as a network plugin
+            #     commandsArr1 = ["mkdir -p /etc/kubernetes/network/calico"]
+            #     res = ssh_conn(host, username, password, sshKey, commandsArr1)
 
-                # Upload tigera-operator.yaml file to remote server
-                # sftp_conn(host, username, password, sshKey, settings.tigera_operator_local_path, settings.tigera_operator_remote_path, "upload")
+            #     # Upload tigera-operator.yaml file to remote server
+            #     # sftp_conn(host, username, password, sshKey, settings.tigera_operator_local_path, settings.tigera_operator_remote_path, "upload")
 
-                commandsArr2 = [
-                    "echo '{}' > /etc/kubernetes/network/calico/custom-resources.yaml".format(settings.custom_resources.replace("192.168.0.0/16", settings.network_cidr)),
-                    "kubectl --kubeconfig /etc/kubernetes/admin.conf create -f https://raw.githubusercontent.com/projectcalico/calico/{}/manifests/operator-crds.yaml".format(settings.calico_version),
-                    "kubectl --kubeconfig /etc/kubernetes/admin.conf create -f https://raw.githubusercontent.com/projectcalico/calico/{}/manifests/tigera-operator.yaml".format(settings.calico_version),
-                    "kubectl --kubeconfig /etc/kubernetes/admin.conf create -f /etc/kubernetes/network/calico/custom-resources.yaml"
-                    ]
-                res = ssh_conn(host, username, password, sshKey, commandsArr2)
+            #     commandsArr2 = [
+            #         "echo '{}' > /etc/kubernetes/network/calico/custom-resources.yaml".format(settings.custom_resources.replace("192.168.0.0/16", settings.network_cidr)),
+            #         "kubectl --kubeconfig /etc/kubernetes/admin.conf create -f https://raw.githubusercontent.com/projectcalico/calico/{}/manifests/operator-crds.yaml".format(settings.calico_version),
+            #         "kubectl --kubeconfig /etc/kubernetes/admin.conf create -f https://raw.githubusercontent.com/projectcalico/calico/{}/manifests/tigera-operator.yaml".format(settings.calico_version),
+            #         "kubectl --kubeconfig /etc/kubernetes/admin.conf create -f /etc/kubernetes/network/calico/custom-resources.yaml"
+            #         ]
+            #     res = ssh_conn(host, username, password, sshKey, commandsArr2)
+
+            #     # for commands in res:
+            #     #     for output in commands:
+            #     #         print(output)
+            #     time.sleep(60)
+            #     print("\nCNI Installed...")
+            # Install_CNI()
+
+            def Install_Cilium():
+                print(settings.COLOR["BLUE"], "\n++++++++++++++++++++( Initialize CNI )++++++++++++++++++++\n", settings.COLOR["ENDC"])
+
+                cilium_script = f"""
+CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
+CLI_ARCH=amd64
+if [ "$(uname -m)" = "aarch64" ]; then CLI_ARCH=arm64; fi
+
+curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${{CILIUM_CLI_VERSION}}/cilium-linux-${{CLI_ARCH}}.tar.gz{{,.sha256sum}}
+
+sha256sum --check cilium-linux-${{CLI_ARCH}}.tar.gz.sha256sum
+
+sudo tar xzvfC cilium-linux-${{CLI_ARCH}}.tar.gz /usr/local/bin
+
+rm cilium-linux-${{CLI_ARCH}}.tar.gz{{,.sha256sum}}
+
+cilium install --version {settings.cilium_version} --set ipam.operator.clusterPoolIPv4PodCIDRList="{{{settings.network_cidr}}}"
+"""
+                res = ssh_conn(host, username, password, sshKey, [cilium_script])
 
                 # for commands in res:
                 #     for output in commands:
                 #         print(output)
-                time.sleep(60)
+                # time.sleep(60)
                 print("\nCNI Installed...")
-            Install_CNI()
+            Install_Cilium()
 
             def Install_metrics_server():
                 print(settings.COLOR["BLUE"], "\n++++++++++++++++++++( Install Metrics Server )++++++++++++++++++++\n", settings.COLOR["ENDC"])
@@ -92,7 +119,7 @@ def Setup_Cluster(servers):
                 # for commands in res:
                 #     for output in commands:
                 #         print(output)
-                time.sleep(50)
+                # time.sleep(50)
                 print("\nMetrics Server Installed...")
             Install_metrics_server()
 

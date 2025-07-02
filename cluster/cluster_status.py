@@ -21,8 +21,7 @@ def Cluster_Status(servers):
 
             def K8S_Status():
                 print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Kubernetes Cluster Status )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
-                commandsArr = ["kubectl --kubeconfig /etc/kubernetes/admin.conf wait --for=condition=ready --timeout=120s --all pod -n calico-system",
-                               "kubectl --kubeconfig /etc/kubernetes/admin.conf wait --for=condition=ready --timeout=120s --all pod -n calico-apiserver", 
+                commandsArr = ["cilium status --wait",
                                "kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes -o wide", 
                                "kubectl --kubeconfig /etc/kubernetes/admin.conf get all --all-namespaces -o wide", 
                                "chmod 644 /etc/kubernetes/admin.conf"]
