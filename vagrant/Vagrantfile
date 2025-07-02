@@ -7,8 +7,19 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", path: "bootstrap.sh"
   config.vm.provision "shell" do |s|
-    # Rest your pub key path
-    ssh_pub_key = File.readlines("C:/Users/sanket/.ssh/id_rsa.pub").first.strip
+    # Reset your pub key path 
+    ssh_pub_key = nil
+    begin
+      # try Windows location
+      ssh_pub_key = File.readlines("C:/Users/sanket/.ssh/id_rsa.pub").first.strip
+    rescue Errno::ENOENT
+      begin
+        # try Linux default
+        ssh_pub_key = File.readlines(File.expand_path("~/.ssh/id_rsa.pub")).first.strip
+      rescue Errno::ENOENT
+        puts "ERROR: SSH public key not found in either location"
+      end
+    end
     s.inline = <<-SHELL
     mkdir /root/.ssh
     touch /root/.ssh/authorized_keys
@@ -31,7 +42,7 @@ Vagrant.configure(2) do |config|
 
       node.vm.provider :virtualbox do |v|
         v.name    = "ubuntuvm#{i}"
-        v.memory  = 3584
+        v.memory  = 3072
         v.cpus    = 2
       end
 
