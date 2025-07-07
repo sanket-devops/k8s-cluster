@@ -1,0 +1,10 @@
+config:
+  ipv4.address: 192.168.56.1/24
+  ipv4.nat: "true"
+  ipv4.dhcp: "false"
+  ipv6.address: "none"
+  dns.mode: managed
+description: NAT bridge for Kubernetes cluster with static DHCP
+name: natbr0
+type: bridge
+managed: true

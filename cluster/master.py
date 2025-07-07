@@ -41,7 +41,7 @@ def Setup_Cluster(servers):
 
             def Kubeadm_Cluster():
                 print(settings.COLOR["BLUE"], "\n++++++++++++++++++++( Initialize Kubeadm Cluster )++++++++++++++++++++\n", settings.COLOR["ENDC"])
-                commandsArr = ["kubeadm init --cri-socket=unix:///var/run/containerd/containerd.sock --pod-network-cidr={} --apiserver-advertise-address={} --apiserver-cert-extra-sans={} --node-name={} --kubernetes-version={}".format(settings.network_cidr, host, host, hostname, settings.kubernetes), "echo 'KUBECONFIG=/etc/kubernetes/admin.conf' >> /etc/environment"]
+                commandsArr = ["kubeadm init --cri-socket=unix:///var/run/containerd/containerd.sock --pod-network-cidr={} --apiserver-advertise-address={} --apiserver-cert-extra-sans={} --node-name={} --kubernetes-version={} --ignore-preflight-errors=SystemVerification".format(settings.network_cidr, host, host, hostname, settings.kubernetes), "echo 'KUBECONFIG=/etc/kubernetes/admin.conf' >> /etc/environment"]
                 res = ssh_conn(host, username, password, sshKey, commandsArr)
                 # for commands in res:
                 #     for output in commands:

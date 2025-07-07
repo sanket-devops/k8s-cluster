@@ -30,7 +30,7 @@ def Join_Nodes(servers):
 
             def Join_Node():
                 print(settings.COLOR["BLUE"], "\n>>>>>>>>>>>>>>>>>>>>( Join This Node To The Cluster )=>( {} = {} )<<<<<<<<<<<<<<<<<<<<\n".format(hostname, host), settings.COLOR["ENDC"])
-                commandsArr = ["{}".format(settings.Node_Join)]
+                commandsArr = ["{} --ignore-preflight-errors=SystemVerification".format(settings.Node_Join)]
                 res = ssh_conn(host, username, password, sshKey, commandsArr)
                 # for commands in res:
                 #     for output in commands:
