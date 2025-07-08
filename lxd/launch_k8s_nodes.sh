@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PUBKEY=$(cat /home/kali/.ssh/id_rsa.pub)
+PUBKEY=$(cat ~/.ssh/id_rsa.pub || cat /home/kali/.ssh/id_rsa.pub)
 PASSWORD="admin"
 
 nodes=(

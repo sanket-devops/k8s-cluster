@@ -7,7 +7,9 @@
 
 ## Add your user to the lxd group so you don’t need sudo:
 ```shell
+echo $SHELL && ps -p $$
 echo 'export PATH=$PATH:/snap/bin' >> /root/.zshrc
+# echo 'export PATH=$PATH:/snap/bin' >> ~/.bashrc && source ~/.bashrc
 source /root/.zshrc
 sudo usermod -aG lxd $USER
 newgrp lxd
@@ -43,7 +45,7 @@ lxc launch <image_server>:<image_name> <instance_name>
 ```
 Example:
 ```shell
-lxc launch ubuntu:24.04 ubuntu1
+lxc launch ubuntu:22.04 ubuntu1
 ```
 
 # 4. Run commands
@@ -54,7 +56,7 @@ lxc exec <instance_name> -- <command />
 Example:
 ```shell
 lxc exec ubuntu1 -- bash
-lxc exec ubuntu1 -- ping -c1 8.8.8.8
+lxc exec ubuntu1 -- ping -c 3 8.8.8.8
 ```
 
 **Containers do not have outgoing internet access&&
@@ -73,7 +75,19 @@ lxc list
 lxc stop ubuntu1 && lxc delete ubuntu1
 ```
 
-# Start lsd containers
+# Start lxd containers
 ```shell
 lxc launch ubuntu:22.04 k8s-node1 --profile k8s
+```
+
+## Convert the Script to Unix Line Endings (LF)
+```shell
+sudo apt install dos2unix
+dos2unix up-lxd.sh
+dos2unix launch_k8s_nodes.sh
+dos2unix down-lxd.sh
+
+
+# Then retry:
+./up-lxd.sh
 ```
