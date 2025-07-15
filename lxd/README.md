@@ -19,6 +19,14 @@ newgrp lxd
 Run the below command on the Linux host where you are running lxd containers. Otherwise kube-proxy pods will fail.
 ```shell
 sudo sysctl -w net.netfilter.nf_conntrack_max=524288
+# sudo sysctl -w net.netfilter.nf_conntrack_max=262144
+
+# Or make it persistent:
+echo "net.netfilter.nf_conntrack_max=262144" >> /etc/sysctl.conf
+sudo sysctl -p
+
+
+# cat /proc/sys/net/netfilter/nf_conntrack_max
 ```
 
 # 2. Configure LXD
