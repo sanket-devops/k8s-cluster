@@ -30,6 +30,14 @@ users:
     passwd: "\$6\$yTu5qDzI\$PEtNTOQzL0yOlfqbsJ50ZqVxbgD38Lx9hyWQwnQ48yptHLRrgINs0k/fNwD1BB6nM8U4JhCl15to6OdEIQENb/"
     ssh_authorized_keys:
       - "$PUBKEY"
+  - name: ubuntu
+    shell: /bin/bash
+    groups: sudo
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: false
+    passwd: "\$6\$yTu5qDzI\$PEtNTOQzL0yOlfqbsJ50ZqVxbgD38Lx9hyWQwnQ48yptHLRrgINs0k/fNwD1BB6nM8U4JhCl15to6OdEIQENb/"
+    ssh_authorized_keys:
+      - "$PUBKEY"
 package_update: true
 package_upgrade: true
 packages:
@@ -66,6 +74,7 @@ runcmd:
   - netplan apply
   - systemctl restart ssh
   - echo "root:$PASSWORD" | chpasswd
+  - echo "ubuntu:$PASSWORD" | chpasswd
 EOF
 )
 

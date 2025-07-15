@@ -15,6 +15,12 @@ sudo usermod -aG lxd $USER
 newgrp lxd
 ```
 
+**IMPORTANT! Sysctl setting on host linux machine**
+Run the below command on the Linux host where you are running lxd containers. Otherwise kube-proxy pods will fail.
+```shell
+sudo sysctl -w net.netfilter.nf_conntrack_max=524288
+```
+
 # 2. Configure LXD
 ```shell
 lxd init
@@ -90,4 +96,16 @@ dos2unix down-lxd.sh
 
 # Then retry:
 ./up-lxd.sh
+```
+
+
+# Use proxy LXD device to expose ports lxd port to wsl 
+```shell
+lxc config device add my-cont http7070 proxy listen=tcp:0.0.0.0:7070 connect=tcp:127.0.0.1:7070
+lxc config device add my-cont http8443 proxy listen=tcp:0.0.0.0:8443 connect=tcp:127.0.0.1:8444
+```
+
+# Cleanup added network
+```shell
+lxc config device remove my-cont http7070
 ```
