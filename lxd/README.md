@@ -18,7 +18,6 @@ newgrp lxd
 **IMPORTANT! Sysctl setting on host linux machine**
 Run the below command on the Linux host where you are running lxd containers. Otherwise kube-proxy pods will fail.
 ```shell
-sudo sysctl -w net.netfilter.nf_conntrack_max=524288
 # sudo sysctl -w net.netfilter.nf_conntrack_max=262144
 
 # Or make it persistent:
